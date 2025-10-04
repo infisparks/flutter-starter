@@ -1,0 +1,41 @@
+name: maden_management
+description: "A new Flutter project."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.9.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  supabase_flutter: ^2.10.2
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+# The following section is specific to Flutter packages.
+flutter:
+
+  uses-material-design: true
+
+  # 1. ASSETS SECTION: Declare the directories where your assets are located.
+  assets:
+#    - assets/images/
+#    - assets/icons/
+    - assets/fonts/ # Include the font directory so files can be found by the app
+
+  # 2. FONTS SECTION: Declare the font family and map the font files.
+  fonts:
+    - family: Poppins # This is the name you'll use in Dart (fontFamily: 'Poppins')
+      fonts:
+        - asset: assets/fonts/Poppins-Light.ttf # Path to your regular font file
+        - asset: assets/fonts/Poppins-Light.ttf  # Map italic style
+          style: italic
+        - asset: assets/fonts/Poppins-Bold.ttf    # Map bold weight
+          weight: 300
+        # NOTE: Add more weights (e.g., Poppins-Medium.ttf with weight: 500)
+        # for a complete professional font experience.

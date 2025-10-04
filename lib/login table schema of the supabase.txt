@@ -1,0 +1,44 @@
+-- 1. Create the 'profiles' table
+CREATE TABLE profiles (
+  -- Primary Key and Foreign Key linking to the Supabase Auth system
+  id uuid REFERENCES auth.users NOT NULL PRIMARY KEY,
+
+  -- Standard Timestamp
+  created_at timestamp with time zone DEFAULT now() NOT NULL,
+
+  -- User-specific data collected during registration
+  name text,
+  number text,
+  email text UNIQUE,
+
+  -- Optional: Deny access to the public schema to view the email list
+  -- You can remove this constraint if you need to display all emails.
+  CONSTRAINT email_non_empty CHECK (char_length(email) > 0)
+);
+
+-- 2. Enable Row-Level Security (RLS)
+-- This is MANDATORY for production apps to keep data secure.
+ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
+
+-- 3. Create RLS Policies
+
+-- Policy 1: Users can read their own profile
+CREATE POLICY "Users can view their own profiles."
+ON profiles FOR SELECT
+TO authenticated
+USING (auth.uid() = id);
+
+-- Policy 2: Users can insert their own profile upon sign-up
+CREATE POLICY "Users can insert their own profile."
+ON profiles FOR INSERT
+TO authenticated
+WITH CHECK (auth.uid() = id);
+
+-- Policy 3: Users can update their own profile (e.g., change name/number)
+CREATE POLICY "Users can update their own profile."
+ON profiles FOR UPDATE
+TO authenticated
+USING (auth.uid() = id);
+
+-- 4. Set up index for faster lookups
+CREATE INDEX profile_id_idx ON profiles (id);
